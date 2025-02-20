@@ -12,7 +12,7 @@ interface SuccessResponseParams {
   message?: string
   statusCode?: number
   reasonStatusCode?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, any> | null
 }
 
 export class SuccessResponse {
@@ -28,7 +28,7 @@ export class SuccessResponse {
   }: SuccessResponseParams) {
     this.message = message ?? reasonStatusCode
     this.status = statusCode
-    this.metadata = metadata
+    this.metadata = metadata ?? {}
   }
 
   send(res: any, header: Record<string, any> = {}): any {

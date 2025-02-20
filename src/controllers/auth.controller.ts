@@ -3,7 +3,7 @@ import { SuccessResponse } from '../core/success.response'
 
 import AuthService from '../services/auth.service'
 
-class UserController {
+class AuthController {
   register = async (req: Request, res: Response) => {
     new SuccessResponse({
       message: 'register successfully!',
@@ -17,13 +17,6 @@ class UserController {
       metadata: await AuthService.Login(req.body)
     }).send(res)
   }
-
-  getUser = async (req: Request, res: Response) => {
-    new SuccessResponse({
-      message: 'get employee successfully!',
-      metadata: await AuthService.getUser()
-    }).send(res)
-  }
 }
 
-export default new UserController()
+export default new AuthController()

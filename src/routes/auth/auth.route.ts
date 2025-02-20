@@ -1,15 +1,13 @@
 import express, { Router } from 'express'
 import asyncHandler from '~/utils/asyncHandle'
-import UserController from '../../controllers/auth.controller'
+import AuthController from '../../controllers/auth.controller'
 import authencation from '~/middlewares/authentication'
 
 const router: Router = express.Router()
 
-router.post('/register', asyncHandler(UserController.register))
-router.post('/login', asyncHandler(UserController.login))
+router.post('/register', asyncHandler(AuthController.register))
+router.post('/login', asyncHandler(AuthController.login))
 
-router.use(authencation)
-
-router.get('/', asyncHandler(UserController.getUser))
+// router.use(authencation)
 
 export default router
