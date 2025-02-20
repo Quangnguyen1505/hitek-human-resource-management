@@ -1,23 +1,23 @@
 import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import { AuthFailureError, BadRequestError } from '~/core/error.response'
-import UserModel, { IUser } from '~/models/user.model'
+import EmployeeModel, { IUser } from '~/models/employee.model'
 import KeyTokenServices from './keyToken.service'
 import createTokenPair from '~/utils/jwt'
 import getInfoData from '~/utils'
 import { Types } from 'mongoose'
 
 const Role = {
-  USER: 'user'
+  Employee: 'employee'
 }
 
-interface User {
+interface Employee {
   _id: Types.ObjectId
   username: string
   fullname: string
 }
 
-interface UserLogin {
+interface EmployeeLogin {
   username: string
   password: string
 }
@@ -26,39 +26,43 @@ class AuthService {
   static async register(data: IUser) {
     const { username, fullname, password, avatar, status } = data
 
-    const foundUser = await UserModel.findOne({ username }).lean()
-    if (foundUser) {
+    const foundEmployee = await EmployeeModel.findOne({ username }).lean()
+    if (foundEmployee) {
       throw new BadRequestError('Error: Shop already registered!')
     }
     const passwordHash = await bcrypt.hash(password, 10)
-    const newUser = await UserModel.create({
+    const newEmployee = await EmployeeModel.create({
       username,
       fullname,
       password: passwordHash,
-      roles: [Role.USER],
+      roles: [Role.Employee],
       avatar,
       status
     })
-    if (newUser) {
+    if (newEmployee) {
       const privateKey = crypto.randomBytes(64).toString('hex')
       const publicKey = crypto.randomBytes(64).toString('hex')
       console.log({ privateKey, publicKey })
 
-      const keyUser = await KeyTokenServices.createKeyToken({
-        userId: newUser._id as Types.ObjectId,
+      const keyEmployee = await KeyTokenServices.createKeyToken({
+        userId: newEmployee._id as Types.ObjectId,
         publicKey,
         privateKey
       })
-      if (!keyUser) {
-        throw new BadRequestError('Error: keyUser error!')
+      if (!keyEmployee) {
+        throw new BadRequestError('Error: keyEmployee error!')
       }
-      const tokens = await createTokenPair({ userId: newUser._id as Types.ObjectId, username }, publicKey, privateKey)
+      const tokens = await createTokenPair(
+        { userId: newEmployee._id as Types.ObjectId, username },
+        publicKey,
+        privateKey
+      )
       console.log('tokens create successfully!', tokens)
 
       return {
-        shop: getInfoData<User>({
+        shop: getInfoData<Employee>({
           fields: ['_id', 'username', 'fullname'],
-          object: { ...newUser, _id: newUser._id as Types.ObjectId }
+          object: { ...newEmployee, _id: newEmployee._id as Types.ObjectId }
         }),
         tokens
       }
@@ -69,10 +73,10 @@ class AuthService {
     }
   }
 
-  static async Login(data: UserLogin) {
+  static async Login(data: EmployeeLogin) {
     const { username, password } = data
 
-    const foundShop = await UserModel.findOne({ username }).lean()
+    const foundShop = await EmployeeModel.findOne({ username }).lean()
     if (!foundShop) throw new BadRequestError('Shop is not registered')
 
     const match = await bcrypt.compare(password, foundShop.password)
@@ -91,7 +95,7 @@ class AuthService {
     })
 
     return {
-      shop: getInfoData<User>({
+      shop: getInfoData<Employee>({
         fields: ['_id', 'username', 'fullname'],
         object: { ...foundShop, _id: foundShop._id as Types.ObjectId }
       }),
@@ -100,7 +104,7 @@ class AuthService {
   }
 
   static async getUser() {
-    const users = await UserModel.find()
+    const users = await EmployeeModel.find()
 
     return users
   }

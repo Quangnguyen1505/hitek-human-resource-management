@@ -20,7 +20,7 @@ class UserController {
 
   getUser = async (req: Request, res: Response) => {
     new SuccessResponse({
-      message: 'get User successfully!',
+      message: 'get employee successfully!',
       metadata: await AuthService.getUser()
     }).send(res)
   }

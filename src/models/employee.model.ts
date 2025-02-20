@@ -10,7 +10,7 @@ export interface IUser extends Document {
   updatedAt: Date
 }
 
-const UserSchema: Schema<IUser> = new Schema(
+const EmployeeSchema: Schema<IUser> = new Schema(
   {
     username: { type: String, required: true, unique: true },
     fullname: { type: String, trim: true },
@@ -21,6 +21,6 @@ const UserSchema: Schema<IUser> = new Schema(
   { timestamps: true }
 )
 
-const UserModel = mongoose.model<IUser>('User', UserSchema)
+const EmployeeModel = mongoose.model<IUser>('employees', EmployeeSchema)
 
-export default UserModel
+export default EmployeeModel
