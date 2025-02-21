@@ -8,7 +8,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 - Node.js: v20.17.0
 - Express: v5.0.1
-- MongoDB: 6.x (Dockerized)
+- MongoDB: 4.4 (Dockerized)
 - Docker: 27.3.1, Docker Compose: v2.30.3
 
 ## 📂 Cấu trúc thư mục
