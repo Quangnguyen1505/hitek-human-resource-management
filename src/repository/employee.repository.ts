@@ -40,12 +40,13 @@ const findEmployeeByUserName = async (username: string): Promise<IUser | null> =
   return employee
 }
 
-const findEmployeeById = async (userId: string): Promise<IUser | null> => {
+const findEmployeeById = async (userId: string, excludePassword = false): Promise<IUser | null> => {
   if (!Types.ObjectId.isValid(userId)) {
     throw new BadRequestError('userId invalid')
   }
 
-  const employee = await EmployeeModel.findById(userId).lean()
+  const unselect = excludePassword ? ['__v', 'password'] : []
+  const employee = await EmployeeModel.findById(userId).select(unGetDataSelectProduct(unselect)).lean()
   return employee
 }
 

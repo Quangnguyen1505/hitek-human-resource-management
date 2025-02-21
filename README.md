@@ -203,10 +203,6 @@ docker-compose down
 
 Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tránh tình trạng tạo nhiều kết nối không cần thiết
 
-## Ảnh chụp kết quả API
-
-> Đính kèm ảnh từ Postman
-
 ## Các tính năng
 
 ### Đã làm:

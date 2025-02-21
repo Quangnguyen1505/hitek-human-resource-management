@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 import { BadRequestError } from '~/core/error.response'
-import EmployeeModel, { IUser } from '~/models/employee.model'
+import { IUser } from '~/models/employee.model'
 import {
   findEmployeeById,
   updateEmployeeById,
@@ -20,21 +20,20 @@ class EmployeeService {
   }
 
   static async getOneEmployees(userId: string) {
-    const employee = await findEmployeeById(userId)
+    const employee = await findEmployeeById(userId, true)
     if (!employee) throw new BadRequestError('employee not exists!!')
 
-    return await findEmployeeById(userId)
+    return employee
   }
 
   static async updateEmployeeByUserId(data: IUserUpdate) {
-    const { userId, fullname, password, avatar, status } = data
+    const { userId, fullname, avatar, status } = data
 
     const employee: IUser | null = await findEmployeeById(userId)
     if (!employee) throw new BadRequestError('employee not exists!!')
 
     const updatePayload: Partial<IUser> = {}
     if (fullname) updatePayload.fullname = fullname
-    if (password) updatePayload.password = password
     if (avatar) updatePayload.avatar = avatar
     if (status !== undefined) updatePayload.status = status
 
