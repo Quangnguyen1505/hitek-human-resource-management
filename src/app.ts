@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/', routes)
 
-
 interface CustomError extends Error {
   status?: number
   now?: number
