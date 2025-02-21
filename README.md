@@ -80,9 +80,9 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 ### 🛠️ **Xác Thực (Authentication)**
 | Phương Thức | Endpoint          | Mô Tả                    | Yêu Cầu Token |
 |------------|------------------|--------------------------|---------------|
-| `POST`     | `/api/v1/auth/register` | Đăng ký tài khoản mới | 
-| `POST`     | `/api/v1/auth/login` | Đăng nhập | 
-| `POST`     | `/api/v1/auth/change-password` | Thay đổi mật khẩu | | ✅ |
+| `POST`     | `/api/v1/auth/register` | Đăng ký tài khoản mới | ❌ |
+| `POST`     | `/api/v1/auth/login` | Đăng nhập | ❌ |
+| `POST`     | `/api/v1/auth/change-password` | Thay đổi mật khẩu | ✅ |
 
 ---
 
@@ -101,44 +101,42 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 ## Sử Dụng Postman
 
 ### 🔐 **Authentication**
-1. Register  
-   **Request Body:**  
+** 1. Register **
+   Request Body:
    ![Request Body](./docs/images/authentication/registerBody.png)  
-   **Response:**  
+   Response:
    ![Response](./docs/images/authentication/registerResult.png)  
 
-2. Login  
-   **Request Body:**  
+** 2. Login **
+   Request Body:
    ![Request Body](./docs/images/authentication/loginBody.png)  
-   **Response:**  
+   Response:
    ![Response](./docs/images/authentication/loginResult.png)  
 
-3. Change password  
-   **Request Body:**  
-   ![Request Body](./docs/images/authentication/changePassword.png)  
+** 3. Change password ** 
+   Request Body and Response: 
+   ![Request Body and Response](./docs/images/authentication/changePassword.png)  
 
 ---
 
 ### 👥 **Employees**
-4. Get employees by Id  
-   **Request Header:**  
-   ![Request Header](./docs/images/employee/getallHeader.png)  
-   **Response:**  
-   ![Response](./docs/images/employee/getOne.png)  
+** 4. Get employees by Id  
+   Request Header and Response:
+   ![Request Header and Response](./docs/images/employee/getOne.png)  
 
-5. Get all employees  
-   **Request Header:**  
+** 5. Get all employees  **
+   Request Header:
    ![Request Header](./docs/images/employee/getallHeader.png)  
-   **Response:**  
+   Response:
    ![Response](./docs/images/employee/getAllResult.png)  
 
-6. Update employees  
-   **Request Body:**  
+** 6. Update employees **
+   Request Body:
    ![Request Body](./docs/images/employee/updateBody.png)  
-   **Response:**  
+   Response:
    ![Response](./docs/images/employee/updateResult.png)  
 
-7. Delete employees  
+** 7. Delete employees **
    ![Delete](./docs/images/employee/delete.png)  
 ## Hướng dẫn sử dụng
 
