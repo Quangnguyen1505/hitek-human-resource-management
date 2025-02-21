@@ -101,42 +101,54 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 ## Sử Dụng Postman
 
 ### 🔐 **Authentication**
-** 1. Register **
+**1. Register**
+
    Request Body:
    ![Request Body](./docs/images/authentication/registerBody.png)  
+
    Response:
    ![Response](./docs/images/authentication/registerResult.png)  
 
-** 2. Login **
+**2. Login**
+
    Request Body:
    ![Request Body](./docs/images/authentication/loginBody.png)  
+
    Response:
    ![Response](./docs/images/authentication/loginResult.png)  
 
-** 3. Change password ** 
+**3. Change password** 
+
    Request Body and Response: 
    ![Request Body and Response](./docs/images/authentication/changePassword.png)  
 
 ---
 
 ### 👥 **Employees**
-** 4. Get employees by Id  
+
+**4. Get employees by Id**
+
    Request Header and Response:
    ![Request Header and Response](./docs/images/employee/getOne.png)  
 
-** 5. Get all employees  **
+**5. Get all employees**
+
    Request Header:
-   ![Request Header](./docs/images/employee/getallHeader.png)  
+   ![Request Header](./docs/images/employee/getallHeader.png) 
+
    Response:
    ![Response](./docs/images/employee/getAllResult.png)  
 
-** 6. Update employees **
+**6. Update employees**
+
    Request Body:
-   ![Request Body](./docs/images/employee/updateBody.png)  
+   ![Request Body](./docs/images/employee/updateBody.png) 
+
    Response:
    ![Response](./docs/images/employee/updateResult.png)  
 
-** 7. Delete employees **
+**7. Delete employees**
+
    ![Delete](./docs/images/employee/delete.png)  
 ## Hướng dẫn sử dụng
 
