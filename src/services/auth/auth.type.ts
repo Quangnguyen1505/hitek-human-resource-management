@@ -1,4 +1,5 @@
 import { Types } from 'mongoose'
+import { IKeyToken } from '~/models/token.model'
 
 export interface IEmployee {
   _id: Types.ObjectId
@@ -30,4 +31,13 @@ export interface IAuthResponse {
     accessToken: string
     refreshToken: string
   } | null
+}
+
+export interface IAuthHandleToken {
+  keyStore: IKeyToken
+  user: {
+    userId: string
+    username: string
+  }
+  refreshToken: string
 }

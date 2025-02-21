@@ -15,6 +15,10 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ```
 /task-hitek
+│── docs/
+│   ├── images/         # Những hình ảnh test API
+│       ├── authentication
+│       ├── employee
 │── src/                # Mã nguồn chính
 │   ├── config/         # Cài đặt cấu hình
 │   ├── controllers/    # Xử lý request
@@ -62,7 +66,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ---
 
-### 👤 **Bảng `employees`** (Lưu trữ thông tin người dùng)
+### 👤 **Bảng `employees`** (Lưu trữ thông tin nhân sự)
 
 | Trường     | Kiểu dữ liệu             | Bắt buộc | Mô tả |
 |-----------|-------------------------|---------|------|
@@ -83,16 +87,17 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 | `POST`     | `/api/v1/auth/register` | Đăng ký tài khoản mới | ❌ |
 | `POST`     | `/api/v1/auth/login` | Đăng nhập | ❌ |
 | `POST`     | `/api/v1/auth/change-password` | Thay đổi mật khẩu | ✅ |
+| `POST`     | `/api/v1/auth/handler-refreshToken` | Xử lý refresh token để cấp token mới khi access token hết hạn, đồng thời kiểm tra bảo mật để tránh các cuộc tấn công sử dụng lại token. | ✅ |
 
 ---
 
-### 👤 **Người Dùng (Employees)**
+### 👤 **Nhân sự (Employees)**
 | Phương Thức | Endpoint            | Mô Tả                        | Yêu Cầu Token |
 |------------|--------------------|------------------------------|---------------|
-| `GET`      | `/api/v1/employees`      | Lấy danh sách người dùng     | ✅ |
-| `GET`      | `/api/v1/employees/:id`  | Lấy thông tin người dùng theo ID | ✅ |
-| `PUT`      | `/api/v1/employees/:id`  | Cập nhật thông tin người dùng | ✅ |
-| `DELETE`   | `/api/v1/employees/:id`  | Xóa người dùng | ✅ |
+| `GET`      | `/api/v1/employees`      | Lấy danh sách nhân sự     | ✅ |
+| `GET`      | `/api/v1/employees/:id`  | Lấy thông tin nhân sự theo ID | ✅ |
+| `PUT`      | `/api/v1/employees/:id`  | Cập nhật thông tin nhân sự | ✅ |
+| `DELETE`   | `/api/v1/employees/:id`  | Xóa nhân sự | ✅ |
 
 # 📸 Kiểm Tra API (Test API)
 
@@ -122,16 +127,27 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
    **Request Body and Response:**  
    ![Request Body and Response](./docs/images/authentication/changePassword.png)  
 
+**4. Handle Refresh Token**  
+
+   **Request Header:**  
+   ![Request Header](./docs/images/authentication/handleRfTokenHeader.png)  
+
+   **Response:**  
+   ![Response](./docs/images/authentication/handleRfTokenResult.png) 
+
+   **Error if reusing Token:**
+   ![reusing Token](./docs/images/authentication/handleRfTokenAgian.png) 
+
 ---  
 
 **👥 Employees**  
 
-**4. Get employees by Id**  
+**5. Get employees by Id**  
 
    **Request Header and Response:**  
    ![Request Header and Response](./docs/images/employee/getOne.png)  
 
-**5. Get all employees**  
+**6. Get all employees**  
 
    **Request Header:**  
    ![Request Header](./docs/images/employee/getallHeader.png)  
@@ -139,7 +155,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
    **Response:**  
    ![Response](./docs/images/employee/getAllResult.png)  
 
-**6. Update employees**  
+**7. Update employees**  
 
    **Request Body:**  
    ![Request Body](./docs/images/employee/updateBody.png)  
@@ -147,7 +163,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
    **Response:**  
    ![Response](./docs/images/employee/updateResult.png)  
 
-**7. Delete employees**  
+**8. Delete employees**  
 
    ![Delete](./docs/images/employee/delete.png)    
 ## Hướng dẫn sử dụng
@@ -165,9 +181,10 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 ```sh
 docker-compose up --build -d
 ```
-**5. **Truy cập API**
+**5. Truy cập API**
 
 ```sh
+example:
 http://localhost:3000/api/employees
 ```
 

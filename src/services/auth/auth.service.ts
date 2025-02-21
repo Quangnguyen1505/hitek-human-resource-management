@@ -1,13 +1,14 @@
 import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
-import { AuthFailureError, BadRequestError } from '~/core/error.response'
+import { AuthFailureError, BadRequestError, ForBiddenError } from '~/core/error.response'
 import EmployeeModel, { IUser } from '~/models/employee.model'
 import KeyTokenServices from '../key-token/keyToken.service'
 import createTokenPair from '~/utils/jwt'
 import getInfoData from '~/utils'
 import { Types } from 'mongoose'
-import { findEmployeeById } from '~/repository/employee.repository'
-import { IEmployee, EmployeeLogin, IUserChangePassword, IAuthResponse } from './auth.type'
+import { findEmployeeById, findEmployeeByUserName } from '~/repository/employee.repository'
+import { IEmployee, EmployeeLogin, IUserChangePassword, IAuthResponse, IAuthHandleToken } from './auth.type'
+import { deleteKeyById } from '~/repository/token.repository'
 
 const Role = {
   Employee: 'employee'
@@ -70,27 +71,31 @@ class AuthService {
   static async Login(data: EmployeeLogin): Promise<IAuthResponse> {
     const { username, password } = data
 
-    const foundShop = await EmployeeModel.findOne({ username }).lean()
-    if (!foundShop) throw new BadRequestError('Shop is not registered')
+    const foundEmployee = await EmployeeModel.findOne({ username }).lean()
+    if (!foundEmployee) throw new BadRequestError('Shop is not registered')
 
-    const match = await bcrypt.compare(password, foundShop.password)
+    const match = await bcrypt.compare(password, foundEmployee.password)
     if (!match) throw new AuthFailureError('Authencation error')
 
     const privateKey = crypto.randomBytes(64).toString('hex')
     const publicKey = crypto.randomBytes(64).toString('hex')
 
-    const tokens = await createTokenPair({ userId: foundShop._id as Types.ObjectId, username }, publicKey, privateKey)
+    const tokens = await createTokenPair(
+      { userId: foundEmployee._id as Types.ObjectId, username },
+      publicKey,
+      privateKey
+    )
 
     await KeyTokenServices.createKeyToken({
       refreshToken: tokens.refreshToken,
-      userId: foundShop._id as Types.ObjectId,
+      userId: foundEmployee._id as Types.ObjectId,
       publicKey,
       privateKey
     })
 
     const userData = getInfoData<IEmployee>({
       fields: ['_id', 'username', 'fullname'],
-      object: { ...foundShop, _id: foundShop._id as Types.ObjectId }
+      object: { ...foundEmployee, _id: foundEmployee._id as Types.ObjectId }
     }) as IAuthResponse['user']
 
     return {
@@ -111,6 +116,44 @@ class AuthService {
     await employee.save()
 
     return null
+  }
+
+  static async HandlerRefreshToken(data: IAuthHandleToken) {
+    const { keyStore, refreshToken, user } = data
+    const userId = user?.userId as string
+    const username = user?.username as string
+
+    if (keyStore.refreshTokensUsed.includes(refreshToken)) {
+      await deleteKeyById(userId)
+      throw new ForBiddenError('Something wrong happen !! Pls Relogin')
+    }
+
+    if (keyStore.refreshToken !== refreshToken) {
+      throw new AuthFailureError('Shop not register !!')
+    }
+
+    const foundEmployee = await findEmployeeByUserName(username)
+    if (!foundEmployee) throw new AuthFailureError('Shop not register !!')
+
+    const tokens = await createTokenPair(
+      { userId: new Types.ObjectId(userId), username },
+      keyStore.publicKey,
+      keyStore.privateKey
+    )
+
+    await keyStore.updateOne({
+      $set: {
+        refreshToken: tokens.refreshToken
+      },
+      $addToSet: {
+        refreshTokensUsed: refreshToken
+      }
+    })
+
+    return {
+      user,
+      tokens
+    }
   }
 }
 

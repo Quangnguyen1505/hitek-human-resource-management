@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import JWT from 'jsonwebtoken'
 import { AuthFailureError, NotFoundError } from '~/core/error.response'
-import findByUserId from '~/repository/token.repository'
+import { findByUserId } from '~/repository/token.repository'
 import asyncHandler from '~/utils/asyncHandle'
 
 const HEADER = {
@@ -12,6 +12,7 @@ const HEADER = {
 
 interface DecodedUser {
   userId: string
+  username: string
   iat: number
   exp: number
 }

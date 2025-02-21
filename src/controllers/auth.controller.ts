@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { SuccessResponse } from '../core/success.response'
 import AuthService from '../services/auth/auth.service'
 import { AuthRequest } from '../middlewares/authentication'
+import { AuthFailureError } from '~/core/error.response'
 
 class AuthController {
   register = async (req: Request, res: Response) => {
@@ -24,6 +25,18 @@ class AuthController {
 
     new SuccessResponse({
       message: 'changePassword successfully!'
+    }).send(res)
+  }
+
+  handleRefreshToken = async (req: AuthRequest, res: Response) => {
+    if (!req.user) throw new AuthFailureError('User not authenticated');
+    new SuccessResponse({
+      message: 'RefreshToken is successfully !',
+      metadata: await AuthService.HandlerRefreshToken({
+        refreshToken: req.refreshToken as string,
+        user: req.user,
+        keyStore: req.keyStore
+      })
     }).send(res)
   }
 }

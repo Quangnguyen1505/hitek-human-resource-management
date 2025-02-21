@@ -30,13 +30,13 @@ const updateEmployeeById = async ({ userId, payload, isNew = true }: UpdateEmplo
   }
 }
 
-const findEmployeeByUserName = async (username: string): Promise<boolean> => {
+const findEmployeeByUserName = async (username: string): Promise<IUser | null> => {
   if (!username) {
     throw new BadRequestError('Username invalid')
   }
 
-  const employee = await EmployeeModel.findById(username)
-  return !!employee
+  const employee = await EmployeeModel.findOne({ username })
+  return employee
 }
 
 const findEmployeeById = async (userId: string): Promise<IUser | null> => {

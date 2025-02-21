@@ -12,5 +12,6 @@ router.post('/login', asyncHandler(AuthController.login))
 router.use(authencation)
 
 router.post('/change-password', asyncHandler(AuthController.changePassword))
+router.post('/handler-refreshToken', asyncHandler(AuthController.handleRefreshToken))
 
 export default router
