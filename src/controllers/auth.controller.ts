@@ -29,7 +29,7 @@ class AuthController {
   }
 
   handleRefreshToken = async (req: AuthRequest, res: Response) => {
-    if (!req.user) throw new AuthFailureError('User not authenticated');
+    if (!req.user) throw new AuthFailureError('User not authenticated')
     new SuccessResponse({
       message: 'RefreshToken is successfully !',
       metadata: await AuthService.HandlerRefreshToken({

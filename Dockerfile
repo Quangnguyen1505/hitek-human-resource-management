@@ -1,27 +1,27 @@
 FROM node:20-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
+RUN npm ci
 
-RUN apk add --no-cache python3 make g++
+COPY tsconfig.json ./
+COPY src ./src
 
-RUN npm install
+RUN npm run build 
 
-COPY . .
+FROM node:20-alpine AS runtime
 
-# Development stage
-FROM builder AS development
+WORKDIR /app
 
-ENV NODE_ENV=development
+COPY --from=builder /app/dist ./dist
+COPY package*.json ./
+COPY .env ./
 
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
-
-# Production stage
-FROM builder AS production
+RUN npm ci --only=production 
 
 ENV NODE_ENV=production
 
-CMD ["npm", "start"]
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]

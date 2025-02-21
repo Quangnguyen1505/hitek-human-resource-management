@@ -4,12 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
+      target: runtime
     ports:
       - '3000:3000'
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     environment:
       NODE_ENV: development
     depends_on:
@@ -18,11 +15,12 @@ services:
       - node-network
 
   mongodb:
-    image: mongo:6-jammy
+    image: mongo:4.4
+    container_name: mongodb
     ports:
       - '27017:27017'
     volumes:
-      - dbdata6:/data/db
+      - /data/mongo:/data/db
     networks:
       - node-network
 

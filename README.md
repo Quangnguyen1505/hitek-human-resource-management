@@ -53,51 +53,53 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ### 🗝️ **Bảng `keys`** (Lưu trữ khóa bảo mật)
 
-| Trường              | Kiểu dữ liệu               | Bắt buộc | Mô tả |
-|---------------------|---------------------------|---------|------|
-| `_id`              | `ObjectId`                 | ✅       | ID của khóa (tự động tạo bởi MongoDB) |
-| `user`             | `ObjectId (ref: Shop)`     | ✅       | ID của Shop liên kết với khóa này |
-| `privateKey`       | `String`                   | ✅       | Khóa riêng tư |
-| `publicKey`        | `String`                   | ✅       | Khóa công khai |
-| `refreshTokensUsed` | `Array<String>`            | ❌       | Danh sách các refresh token đã sử dụng |
-| `refreshToken`     | `String`                   | ✅       | Refresh token hiện tại |
-| `createdAt`        | `Date`                     | ✅       | Thời gian tạo (tự động) |
-| `updatedAt`        | `Date`                     | ✅       | Thời gian cập nhật (tự động) |
+| Trường              | Kiểu dữ liệu           | Bắt buộc | Mô tả                                  |
+| ------------------- | ---------------------- | -------- | -------------------------------------- |
+| `_id`               | `ObjectId`             | ✅       | ID của khóa (tự động tạo bởi MongoDB)  |
+| `user`              | `ObjectId (ref: Shop)` | ✅       | ID của Shop liên kết với khóa này      |
+| `privateKey`        | `String`               | ✅       | Khóa riêng tư                          |
+| `publicKey`         | `String`               | ✅       | Khóa công khai                         |
+| `refreshTokensUsed` | `Array<String>`        | ❌       | Danh sách các refresh token đã sử dụng |
+| `refreshToken`      | `String`               | ✅       | Refresh token hiện tại                 |
+| `createdAt`         | `Date`                 | ✅       | Thời gian tạo (tự động)                |
+| `updatedAt`         | `Date`                 | ✅       | Thời gian cập nhật (tự động)           |
 
 ---
 
 ### 👤 **Bảng `employees`** (Lưu trữ thông tin nhân sự)
 
-| Trường     | Kiểu dữ liệu             | Bắt buộc | Mô tả |
-|-----------|-------------------------|---------|------|
-| `_id`     | `ObjectId`               | ✅       | ID của nhân viên (tự động tạo bởi MongoDB) |
-| `username` | `String (unique)`       | ✅       | Tên đăng nhập (không trùng lặp) |
-| `fullname` | `String`                | ❌       | Họ và tên |
-| `password` | `String`                | ✅       | Mật khẩu đã hash |
-| `avatar`   | `String`                | ❌       | Ảnh đại diện |
-| `status`   | `Enum('active', 'deactive')` | ✅  | Trạng thái tài khoản (mặc định: `active`) |
-| `createdAt` | `Date`                 | ✅       | Thời gian tạo (tự động) |
-| `updatedAt` | `Date`                 | ✅       | Thời gian cập nhật (tự động) |
+| Trường      | Kiểu dữ liệu                 | Bắt buộc | Mô tả                                      |
+| ----------- | ---------------------------- | -------- | ------------------------------------------ |
+| `_id`       | `ObjectId`                   | ✅       | ID của nhân viên (tự động tạo bởi MongoDB) |
+| `username`  | `String (unique)`            | ✅       | Tên đăng nhập (không trùng lặp)            |
+| `fullname`  | `String`                     | ❌       | Họ và tên                                  |
+| `password`  | `String`                     | ✅       | Mật khẩu đã hash                           |
+| `avatar`    | `String`                     | ❌       | Ảnh đại diện                               |
+| `status`    | `Enum('active', 'deactive')` | ✅       | Trạng thái tài khoản (mặc định: `active`)  |
+| `createdAt` | `Date`                       | ✅       | Thời gian tạo (tự động)                    |
+| `updatedAt` | `Date`                       | ✅       | Thời gian cập nhật (tự động)               |
 
 ## 📌 Danh Sách API
 
 ### 🛠️ **Xác Thực (Authentication)**
-| Phương Thức | Endpoint          | Mô Tả                    | Yêu Cầu Token |
-|------------|------------------|--------------------------|---------------|
-| `POST`     | `/api/v1/auth/register` | Đăng ký tài khoản mới | ❌ |
-| `POST`     | `/api/v1/auth/login` | Đăng nhập | ❌ |
-| `POST`     | `/api/v1/auth/change-password` | Thay đổi mật khẩu | ✅ |
-| `POST`     | `/api/v1/auth/handler-refreshToken` | Xử lý refresh token để cấp token mới khi access token hết hạn, đồng thời kiểm tra bảo mật để tránh các cuộc tấn công sử dụng lại token. | ✅ |
+
+| Phương Thức | Endpoint                            | Mô Tả                                                                                                                                   | Yêu Cầu Token |
+| ----------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `POST`      | `/api/v1/auth/register`             | Đăng ký tài khoản mới                                                                                                                   | ❌            |
+| `POST`      | `/api/v1/auth/login`                | Đăng nhập                                                                                                                               | ❌            |
+| `POST`      | `/api/v1/auth/change-password`      | Thay đổi mật khẩu                                                                                                                       | ✅            |
+| `POST`      | `/api/v1/auth/handler-refreshToken` | Xử lý refresh token để cấp token mới khi access token hết hạn, đồng thời kiểm tra bảo mật để tránh các cuộc tấn công sử dụng lại token. | ✅            |
 
 ---
 
 ### 👤 **Nhân sự (Employees)**
-| Phương Thức | Endpoint            | Mô Tả                        | Yêu Cầu Token |
-|------------|--------------------|------------------------------|---------------|
-| `GET`      | `/api/v1/employees`      | Lấy danh sách nhân sự     | ✅ |
-| `GET`      | `/api/v1/employees/:id`  | Lấy thông tin nhân sự theo ID | ✅ |
-| `PUT`      | `/api/v1/employees/:id`  | Cập nhật thông tin nhân sự | ✅ |
-| `DELETE`   | `/api/v1/employees/:id`  | Xóa nhân sự | ✅ |
+
+| Phương Thức | Endpoint                | Mô Tả                         | Yêu Cầu Token |
+| ----------- | ----------------------- | ----------------------------- | ------------- |
+| `GET`       | `/api/v1/employees`     | Lấy danh sách nhân sự         | ✅            |
+| `GET`       | `/api/v1/employees/:id` | Lấy thông tin nhân sự theo ID | ✅            |
+| `PUT`       | `/api/v1/employees/:id` | Cập nhật thông tin nhân sự    | ✅            |
+| `DELETE`    | `/api/v1/employees/:id` | Xóa nhân sự                   | ✅            |
 
 # 📸 Kiểm Tra API (Test API)
 
@@ -105,74 +107,76 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ## Sử Dụng Postman
 
-### 🔐 **Authentication** 
-**1. Register**  
+### 🔐 **Authentication**
 
-   **Request Body:**  
-   ![Request Body](./docs/images/authentication/registerBody.png)  
+**1. Register**
 
-   **Response:**  
-   ![Response](./docs/images/authentication/registerResult.png)  
+**Request Body:**  
+ ![Request Body](./docs/images/authentication/registerBody.png)
 
-**2. Login**  
+**Response:**  
+ ![Response](./docs/images/authentication/registerResult.png)
 
-   **Request Body:**  
-   ![Request Body](./docs/images/authentication/loginBody.png)  
+**2. Login**
 
-   **Response:**  
-   ![Response](./docs/images/authentication/loginResult.png)  
+**Request Body:**  
+ ![Request Body](./docs/images/authentication/loginBody.png)
 
-**3. Change password**  
+**Response:**  
+ ![Response](./docs/images/authentication/loginResult.png)
 
-   **Request Body and Response:**  
-   ![Request Body and Response](./docs/images/authentication/changePassword.png)  
+**3. Change password**
 
-**4. Handle Refresh Token**  
+**Request Body and Response:**  
+ ![Request Body and Response](./docs/images/authentication/changePassword.png)
 
-   **Request Header:**  
-   ![Request Header](./docs/images/authentication/handleRfTokenHeader.png)  
+**4. Handle Refresh Token**
 
-   **Response:**  
-   ![Response](./docs/images/authentication/handleRfTokenResult.png) 
+**Request Header:**  
+ ![Request Header](./docs/images/authentication/handleRfTokenHeader.png)
 
-   **Error if reusing Token:**
-   ![reusing Token](./docs/images/authentication/handleRfTokenAgian.png) 
+**Response:**  
+ ![Response](./docs/images/authentication/handleRfTokenResult.png)
 
----  
+**Error if reusing Token:**
+![reusing Token](./docs/images/authentication/handleRfTokenAgian.png)
 
-**👥 Employees**  
+---
 
-**5. Get employees by Id**  
+**👥 Employees**
 
-   **Request Header and Response:**  
-   ![Request Header and Response](./docs/images/employee/getOne.png)  
+**5. Get employees by Id**
 
-**6. Get all employees**  
+**Request Header and Response:**  
+ ![Request Header and Response](./docs/images/employee/getOne.png)
 
-   **Request Header:**  
-   ![Request Header](./docs/images/employee/getallHeader.png)  
+**6. Get all employees**
 
-   **Response:**  
-   ![Response](./docs/images/employee/getAllResult.png)  
+**Request Header:**  
+ ![Request Header](./docs/images/employee/getallHeader.png)
 
-**7. Update employees**  
+**Response:**  
+ ![Response](./docs/images/employee/getAllResult.png)
 
-   **Request Body:**  
-   ![Request Body](./docs/images/employee/updateBody.png)  
+**7. Update employees**
 
-   **Response:**  
-   ![Response](./docs/images/employee/updateResult.png)  
+**Request Body:**  
+ ![Request Body](./docs/images/employee/updateBody.png)
 
-**8. Delete employees**  
+**Response:**  
+ ![Response](./docs/images/employee/updateResult.png)
 
-   ![Delete](./docs/images/employee/delete.png)    
+**8. Delete employees**
+
+![Delete](./docs/images/employee/delete.png)
+
 ## Hướng dẫn sử dụng
 
 1. **Clone repo**
 
 2. **Cài đặt Docker và Docker Compose**
 
-## Chạy bằng Docker
+### Chạy bằng Docker
 
 **3. Thêm file .env như trong env.example**
 
@@ -181,6 +185,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 ```sh
 docker-compose up --build -d
 ```
+
 **5. Truy cập API**
 
 ```sh
@@ -215,6 +220,7 @@ Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tr
 ### Chưa làm: Không có
 
 ### Những thứ chưa được cải tiến:
+
 - [] Tối ưu hóa docker image size
 
 ## Hướng dẫn deploy
@@ -238,4 +244,3 @@ docker-compose up --build -d
 example:
 http://localhost:3000/api/employees
 ```
-

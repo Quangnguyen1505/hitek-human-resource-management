@@ -1,7 +1,12 @@
 import { Types } from 'mongoose'
 import { BadRequestError } from '~/core/error.response'
 import EmployeeModel, { IUser } from '~/models/employee.model'
-import { findEmployeeById, updateEmployeeById, deleteEmployeeByUserId, findAllEmployees } from '~/repository/employee.repository'
+import {
+  findEmployeeById,
+  updateEmployeeById,
+  deleteEmployeeByUserId,
+  findAllEmployees
+} from '~/repository/employee.repository'
 import { IUserUpdate } from './employmee.type'
 class EmployeeService {
   static async getEmployees({ limit = 50, sort = 'ctime', page = 1, filter = { status: 'active' } }) {
