@@ -8,7 +8,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 - Node.js: v20.17.0
 - Express: v5.0.1
-- MongoDB: Latest (Dockerized)
+- MongoDB: 6.x (Dockerized)
 - Docker: 27.3.1, Docker Compose: v2.30.3
 
 ## 📂 Cấu trúc thư mục
@@ -75,7 +75,71 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 | `createdAt` | `Date`                 | ✅       | Thời gian tạo (tự động) |
 | `updatedAt` | `Date`                 | ✅       | Thời gian cập nhật (tự động) |
 
+## 📌 Danh Sách API
 
+### 🛠️ **Xác Thực (Authentication)**
+| Phương Thức | Endpoint          | Mô Tả                    | Yêu Cầu Token |
+|------------|------------------|--------------------------|---------------|
+| `POST`     | `/api/v1/auth/register` | Đăng ký tài khoản mới | 
+| `POST`     | `/api/v1/auth/login` | Đăng nhập | 
+| `POST`     | `/api/v1/auth/change-password` | Thay đổi mật khẩu | | ✅ |
+
+---
+
+### 👤 **Người Dùng (Employees)**
+| Phương Thức | Endpoint            | Mô Tả                        | Yêu Cầu Token |
+|------------|--------------------|------------------------------|---------------|
+| `GET`      | `/api/v1/employees`      | Lấy danh sách người dùng     | ✅ |
+| `GET`      | `/api/v1/employees/:id`  | Lấy thông tin người dùng theo ID | ✅ |
+| `PUT`      | `/api/v1/employees/:id`  | Cập nhật thông tin người dùng | ✅ |
+| `DELETE`   | `/api/v1/employees/:id`  | Xóa người dùng | ✅ |
+
+# 📸 Kiểm Tra API (Test API)
+
+Để kiểm tra các API của dự án, bạn có thể sử dụng **Postman**.
+
+## Sử Dụng Postman
+
+### 🔐 **Authentication**
+1. Register  
+   **Request Body:**  
+   ![Request Body](./docs/images/authentication/registerBody.png)  
+   **Response:**  
+   ![Response](./docs/images/authentication/registerResult.png)  
+
+2. Login  
+   **Request Body:**  
+   ![Request Body](./docs/images/authentication/loginBody.png)  
+   **Response:**  
+   ![Response](./docs/images/authentication/loginResult.png)  
+
+3. Change password  
+   **Request Body:**  
+   ![Request Body](./docs/images/authentication/changePassword.png)  
+
+---
+
+### 👥 **Employees**
+4. Get employees by Id  
+   **Request Header:**  
+   ![Request Header](./docs/images/employee/getallHeader.png)  
+   **Response:**  
+   ![Response](./docs/images/employee/getOne.png)  
+
+5. Get all employees  
+   **Request Header:**  
+   ![Request Header](./docs/images/employee/getallHeader.png)  
+   **Response:**  
+   ![Response](./docs/images/employee/getAllResult.png)  
+
+6. Update employees  
+   **Request Body:**  
+   ![Request Body](./docs/images/employee/updateBody.png)  
+   **Response:**  
+   ![Response](./docs/images/employee/updateResult.png)  
+
+7. Delete employees  
+   ![Delete](./docs/images/employee/delete.png)  
 ## Hướng dẫn sử dụng
 
 1. **Clone repo**
@@ -84,19 +148,20 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ## Chạy bằng Docker
 
-### 3. Thêm file .env như trong env.example
+** 3. Thêm file .env như trong env.example **
 
-### 4. Xây dựng và chạy container
+** 4. Xây dựng và chạy container **
 
 ```sh
 docker-compose up --build -d
 ```
-### 5. **Truy cập API**
+** 5. **Truy cập API **
 
 ```sh
 http://localhost:3000/api/employees
+```
 
-### 6. Dừng container
+** 6. Dừng container **
 
 ```sh
 docker-compose down
@@ -120,7 +185,7 @@ Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tr
 - [x] Kết nối MongoDB theo Singleton Pattern
 - [x] Dockerized backend + MongoDB sử dụng docker và docker-compose
 
-### Chưa làm:
+### Chưa làm: Không có
 
 ### Những thứ chưa được cải tiến:
 - [] Tối ưu hóa docker image size
@@ -143,6 +208,7 @@ docker-compose up --build -d
 4. **Truy cập API**
 
 ```sh
+example:
 http://localhost:3000/api/employees
 ```
 

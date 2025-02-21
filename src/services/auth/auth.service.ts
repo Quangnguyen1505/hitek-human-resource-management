@@ -50,9 +50,10 @@ class AuthService {
       )
       console.log('tokens create successfully!', tokens)
 
+      const newEmployeeData = newEmployee.toObject()
       const userData = getInfoData<IEmployee>({
         fields: ['_id', 'username', 'fullname'],
-        object: { ...newEmployee, _id: newEmployee._id as Types.ObjectId }
+        object: { ...newEmployeeData, _id: newEmployeeData._id as Types.ObjectId }
       }) as IAuthResponse['user']
 
       return {
