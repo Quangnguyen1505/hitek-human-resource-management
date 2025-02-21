@@ -178,22 +178,22 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ### Chạy bằng Docker
 
-**3. Thêm file .env như trong env.example**
+3. **Thêm file .env như trong env.example**
 
-**4. Xây dựng và chạy container**
+4. **Xây dựng và chạy container**
 
 ```sh
 docker-compose up --build -d
 ```
 
-**5. Truy cập API**
+5. **Truy cập API**
 
 ```sh
 example:
 http://localhost:3000/api/employees
 ```
 
-**6. Dừng container**
+6. **Dừng container**
 
 ```sh
 docker-compose down
