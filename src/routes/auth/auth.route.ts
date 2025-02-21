@@ -6,8 +6,11 @@ import authencation from '~/middlewares/authentication'
 const router: Router = express.Router()
 
 router.post('/register', asyncHandler(AuthController.register))
+
 router.post('/login', asyncHandler(AuthController.login))
 
-// router.use(authencation)
+router.use(authencation)
+
+router.post('/change-password', asyncHandler(AuthController.changePassword))
 
 export default router

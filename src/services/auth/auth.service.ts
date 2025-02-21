@@ -2,28 +2,19 @@ import bcrypt from 'bcrypt'
 import crypto from 'node:crypto'
 import { AuthFailureError, BadRequestError } from '~/core/error.response'
 import EmployeeModel, { IUser } from '~/models/employee.model'
-import KeyTokenServices from './keyToken.service'
+import KeyTokenServices from '../key-token/keyToken.service'
 import createTokenPair from '~/utils/jwt'
 import getInfoData from '~/utils'
 import { Types } from 'mongoose'
+import { findEmployeeById } from '~/repository/employee.repository'
+import { IEmployee, EmployeeLogin, IUserChangePassword, IAuthResponse } from './auth.type'
 
 const Role = {
   Employee: 'employee'
 }
 
-interface Employee {
-  _id: Types.ObjectId
-  username: string
-  fullname: string
-}
-
-interface EmployeeLogin {
-  username: string
-  password: string
-}
-
 class AuthService {
-  static async register(data: IUser) {
+  static async register(data: IUser): Promise<IAuthResponse | null> {
     const { username, fullname, password, avatar, status } = data
 
     const foundEmployee = await EmployeeModel.findOne({ username }).lean()
@@ -59,21 +50,23 @@ class AuthService {
       )
       console.log('tokens create successfully!', tokens)
 
+      const userData = getInfoData<IEmployee>({
+        fields: ['_id', 'username', 'fullname'],
+        object: { ...newEmployee, _id: newEmployee._id as Types.ObjectId }
+      }) as IAuthResponse['user']
+
       return {
-        shop: getInfoData<Employee>({
-          fields: ['_id', 'username', 'fullname'],
-          object: { ...newEmployee, _id: newEmployee._id as Types.ObjectId }
-        }),
+        user: userData,
         tokens
       }
     }
     return {
-      code: 200,
-      metadata: null
+      tokens: null,
+      user: null
     }
   }
 
-  static async Login(data: EmployeeLogin) {
+  static async Login(data: EmployeeLogin): Promise<IAuthResponse> {
     const { username, password } = data
 
     const foundShop = await EmployeeModel.findOne({ username }).lean()
@@ -94,19 +87,29 @@ class AuthService {
       privateKey
     })
 
+    const userData = getInfoData<IEmployee>({
+      fields: ['_id', 'username', 'fullname'],
+      object: { ...foundShop, _id: foundShop._id as Types.ObjectId }
+    }) as IAuthResponse['user']
+
     return {
-      shop: getInfoData<Employee>({
-        fields: ['_id', 'username', 'fullname'],
-        object: { ...foundShop, _id: foundShop._id as Types.ObjectId }
-      }),
+      user: userData,
       tokens
     }
   }
 
-  static async getUser() {
-    const users = await EmployeeModel.find()
+  static async changePassword(userId: string, data: IUserChangePassword): Promise<null> {
+    const { oldPassword, newPassword } = data
+    const employee = await findEmployeeById(userId)
+    if (!employee) throw new BadRequestError('employee not exists!!')
 
-    return users
+    const isMatch = await bcrypt.compare(oldPassword, employee.password)
+    if (!isMatch) throw new BadRequestError('Old password is incorrect')
+
+    employee.password = await bcrypt.hash(newPassword, 10)
+    await employee.save()
+
+    return null
   }
 }
 

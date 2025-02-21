@@ -2,19 +2,10 @@ import { Types } from 'mongoose'
 import { BadRequestError } from '~/core/error.response'
 import EmployeeModel, { IUser } from '~/models/employee.model'
 import { findEmployeeById, updateEmployeeById, deleteEmployeeByUserId } from '~/repository/employee.repository'
-
-interface IUserUpdate {
-  userId: string
-  fullname: string
-  password: string
-  avatar: string
-  status: 'active' | 'deactive' | undefined
-}
-
+import { IUserUpdate } from './employmee.type'
 class EmployeeService {
   static async getEmployees() {
     const users = await EmployeeModel.find()
-
     return users
   }
 

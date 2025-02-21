@@ -1,12 +1,5 @@
-import { Types } from 'mongoose'
 import keyTokenModel from '~/models/token.model'
-
-interface IKeyTokenInput {
-  userId: Types.ObjectId
-  publicKey: string
-  privateKey: string
-  refreshToken?: string
-}
+import { IKeyTokenInput } from './key-token.type'
 
 class KeyTokenServices {
   static async createKeyToken({ userId, publicKey, privateKey, refreshToken }: IKeyTokenInput): Promise<string | null> {

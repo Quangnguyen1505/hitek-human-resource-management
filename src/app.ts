@@ -12,12 +12,12 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/', routes)
 
+
 interface CustomError extends Error {
   status?: number
   now?: number
 }
 
-// Middleware bắt lỗi 404
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error: CustomError = new Error('Not Found')
   error.status = 404

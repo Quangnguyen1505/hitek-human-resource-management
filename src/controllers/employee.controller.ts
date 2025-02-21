@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { SuccessResponse } from '../core/success.response'
 
-import EmployeeService from '~/services/employee.service'
+import EmployeeService from '~/services/employment/employee.service'
 
 class UserController {
   getEmployees = async (req: Request, res: Response) => {

@@ -3,20 +3,11 @@ services:
   node-api:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: development
+      target: production
     ports:
       - '3000:3000'
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     environment:
-      NODE_ENV: development
-    depends_on:
-      - mongodb
-    networks:
-      - node-network
-
+      NODE_ENV: production
   mongodb:
     image: mongo:6-jammy
     ports:

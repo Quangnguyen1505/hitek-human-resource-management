@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
 import configGlobal from '~/config/global.config'
 
-const DATABASE_URL = configGlobal.dbUrl as string
+const { dbPort, dbHost, nameDb, auth } = configGlobal
+const DATABASE_URL = `mongodb://${dbHost}:${dbPort}/${nameDb}?authSource=${auth}`
 
 console.log(DATABASE_URL)
 

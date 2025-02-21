@@ -8,8 +8,11 @@ const router: Router = express.Router()
 router.use(authencation)
 
 router.get('/:userId', asyncHandler(EmployeeController.getOneEmployees))
+
 router.get('/', asyncHandler(EmployeeController.getEmployees))
+
 router.put('/', asyncHandler(EmployeeController.updateEmployee))
+
 router.delete('/:userId', asyncHandler(EmployeeController.deleteEmployee))
 
 export default router

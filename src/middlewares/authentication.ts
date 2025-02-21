@@ -54,3 +54,4 @@ const authencation = asyncHandler(async (req: AuthRequest, res: Response, next: 
 })
 
 export default authencation
+export { AuthRequest }
