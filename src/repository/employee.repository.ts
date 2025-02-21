@@ -1,6 +1,7 @@
 import EmployeeModel, { IUser } from '~/models/employee.model'
-import { Types } from 'mongoose'
+import { SortOrder, Types } from 'mongoose'
 import { BadRequestError, NotFoundError } from '~/core/error.response'
+import { unGetDataSelectProduct } from '~/utils'
 
 interface UpdateEmployeeParams {
   userId: Types.ObjectId
@@ -35,7 +36,7 @@ const findEmployeeByUserName = async (username: string): Promise<IUser | null> =
     throw new BadRequestError('Username invalid')
   }
 
-  const employee = await EmployeeModel.findOne({ username })
+  const employee = await EmployeeModel.findOne({ username }).lean()
   return employee
 }
 
@@ -44,7 +45,7 @@ const findEmployeeById = async (userId: string): Promise<IUser | null> => {
     throw new BadRequestError('userId invalid')
   }
 
-  const employee = await EmployeeModel.findById(userId)
+  const employee = await EmployeeModel.findById(userId).lean()
   return employee
 }
 
@@ -57,4 +58,30 @@ const deleteEmployeeByUserId = async (userId: string): Promise<boolean> => {
   return !!employee
 }
 
-export { updateEmployeeById, findEmployeeByUserName, findEmployeeById, deleteEmployeeByUserId }
+const findAllEmployees = async ({
+  limit,
+  sort,
+  page,
+  filter,
+  unselect
+}: {
+  limit: number
+  sort: string
+  page: number
+  filter: object
+  unselect: string[]
+}) => {
+  const skip = (page - 1) * limit
+  const sortBy = sort === 'ctime' ? { _id: -1 as SortOrder } : { _id: 1 as SortOrder }
+  const employees = await EmployeeModel.find(filter)
+    .sort(sortBy)
+    .skip(skip)
+    .limit(limit)
+    .select(unGetDataSelectProduct(unselect))
+
+  const totalCount = await EmployeeModel.countDocuments(filter)
+
+  return { employees, totalCount }
+}
+
+export { updateEmployeeById, findEmployeeByUserName, findEmployeeById, deleteEmployeeByUserId, findAllEmployees }

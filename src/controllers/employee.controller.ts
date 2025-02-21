@@ -7,7 +7,7 @@ class UserController {
   getEmployees = async (req: Request, res: Response) => {
     new SuccessResponse({
       message: 'get employee successfully!',
-      metadata: await EmployeeService.getEmployees()
+      metadata: await EmployeeService.getEmployees(req.query)
     }).send(res)
   }
 

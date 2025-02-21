@@ -4,7 +4,7 @@ import { AuthFailureError, BadRequestError, ForBiddenError } from '~/core/error.
 import EmployeeModel, { IUser } from '~/models/employee.model'
 import KeyTokenServices from '../key-token/keyToken.service'
 import createTokenPair from '~/utils/jwt'
-import getInfoData from '~/utils'
+import { getInfoData } from '~/utils'
 import { Types } from 'mongoose'
 import { findEmployeeById, findEmployeeByUserName } from '~/repository/employee.repository'
 import { IEmployee, EmployeeLogin, IUserChangePassword, IAuthResponse, IAuthHandleToken } from './auth.type'

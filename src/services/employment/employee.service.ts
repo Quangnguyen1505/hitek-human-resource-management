@@ -1,12 +1,17 @@
 import { Types } from 'mongoose'
 import { BadRequestError } from '~/core/error.response'
 import EmployeeModel, { IUser } from '~/models/employee.model'
-import { findEmployeeById, updateEmployeeById, deleteEmployeeByUserId } from '~/repository/employee.repository'
+import { findEmployeeById, updateEmployeeById, deleteEmployeeByUserId, findAllEmployees } from '~/repository/employee.repository'
 import { IUserUpdate } from './employmee.type'
 class EmployeeService {
-  static async getEmployees() {
-    const users = await EmployeeModel.find()
-    return users
+  static async getEmployees({ limit = 50, sort = 'ctime', page = 1, filter = { status: 'active' } }) {
+    return await findAllEmployees({
+      limit,
+      sort,
+      page,
+      filter,
+      unselect: ['__v', 'password']
+    })
   }
 
   static async getOneEmployees(userId: string) {
