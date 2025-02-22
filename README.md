@@ -224,6 +224,7 @@ Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tr
 
 - [x] Quản lý nhân sự(Xem tất cả, xem chi tiết, xóa, chỉnh sửa nhân sự )
 - [x] Authentication(Đăng kí, đăng nhập, thay đổi mật khẩu)
+- [x] Mã hóa Password với salt trước lưu vào database
 - [x] Xác thực JWT bảo vệ router và tạo JWT sử dụng thuật toán đối xứng ngoài ra có cấp cặp Token mới khi hết hạn và ngăn chặn tấn công sử dụng lại token
 - [x] Xử lý lỗi(Thành công, Thất bại, Ngoại lệ)
 - [x] Kết nối MongoDB theo Singleton Pattern
