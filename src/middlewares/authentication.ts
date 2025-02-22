@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import JWT from 'jsonwebtoken'
 import { AuthFailureError, NotFoundError } from '~/core/error.response'
+import { IKeyToken } from '~/models/token.model'
 import { findByUserId } from '~/repository/token.repository'
 import asyncHandler from '~/utils/asyncHandle'
 
@@ -18,7 +19,7 @@ interface DecodedUser {
 }
 
 interface AuthRequest extends Request {
-  keyStore?: any
+  keyStore?: IKeyToken
   user?: DecodedUser
   refreshToken?: string
 }

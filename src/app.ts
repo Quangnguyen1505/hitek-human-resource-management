@@ -24,7 +24,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next(error)
 })
 
-const errorHandler: ErrorRequestHandler = (error: CustomError, req: Request, res: Response, next: NextFunction) => {
+const errorHandler: ErrorRequestHandler = (error: CustomError, req: Request, res: Response) => {
   const statusCode = error.status || 500
 
   res.status(statusCode).json({

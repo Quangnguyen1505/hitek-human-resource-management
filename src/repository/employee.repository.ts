@@ -5,7 +5,7 @@ import { unGetDataSelectProduct } from '~/utils'
 
 interface UpdateEmployeeParams {
   userId: Types.ObjectId
-  payload: Partial<Record<string, any>>
+  payload: Partial<IUser>
   isNew?: boolean
 }
 

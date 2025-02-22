@@ -10,10 +10,6 @@ import { findEmployeeById, findEmployeeByUserName } from '~/repository/employee.
 import { IEmployee, EmployeeLogin, IUserChangePassword, IAuthResponse, IAuthHandleToken } from './auth.type'
 import { deleteKeyById } from '~/repository/token.repository'
 
-const Role = {
-  Employee: 'employee'
-}
-
 class AuthService {
   static async register(data: IUser): Promise<IAuthResponse | null> {
     const { username, fullname, password, avatar, status } = data
@@ -27,7 +23,6 @@ class AuthService {
       username,
       fullname,
       password: passwordHash,
-      roles: [Role.Employee],
       avatar,
       status
     })
@@ -52,10 +47,7 @@ class AuthService {
       console.log('tokens create successfully!', tokens)
 
       const newEmployeeData = newEmployee.toObject()
-      const userData = getInfoData<IEmployee>({
-        fields: ['_id', 'username', 'fullname'],
-        object: { ...newEmployeeData, _id: newEmployeeData._id as Types.ObjectId }
-      }) as IAuthResponse['user']
+      const userData = this.getUserData(newEmployeeData)
 
       return {
         user: userData,
@@ -68,11 +60,11 @@ class AuthService {
     }
   }
 
-  static async Login(data: EmployeeLogin): Promise<IAuthResponse> {
+  static async login(data: EmployeeLogin): Promise<IAuthResponse> {
     const { username, password } = data
 
     const foundEmployee = await EmployeeModel.findOne({ username }).lean()
-    if (!foundEmployee) throw new BadRequestError('Shop is not registered')
+    if (!foundEmployee) throw new AuthFailureError('Shop is not registered')
 
     const match = await bcrypt.compare(password, foundEmployee.password)
     if (!match) throw new AuthFailureError('Authencation error')
@@ -93,10 +85,7 @@ class AuthService {
       privateKey
     })
 
-    const userData = getInfoData<IEmployee>({
-      fields: ['_id', 'username', 'fullname'],
-      object: { ...foundEmployee, _id: foundEmployee._id as Types.ObjectId }
-    }) as IAuthResponse['user']
+    const userData = this.getUserData(foundEmployee)
 
     return {
       user: userData,
@@ -154,6 +143,13 @@ class AuthService {
       user,
       tokens
     }
+  }
+
+  private static getUserData(user: IUser): IAuthResponse['user'] {
+    return getInfoData<IEmployee>({
+      fields: ['_id', 'username', 'fullname'],
+      object: { ...user, _id: user._id as Types.ObjectId }
+    }) as IAuthResponse['user']
   }
 }
 

@@ -210,13 +210,13 @@ Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tr
 - [x] Quản lý nhân sự(Xem tất cả, xem chi tiết, xóa, chỉnh sửa nhân sự )
 - [x] Authentication(Đăng kí, đăng nhập, thay đổi mật khẩu)
 - [x] Xác thực JWT bảo vệ router và tạo JWT sử dụng thuật toán đối xứng
+- [x] Xử lý lỗi(Thành công, Thất bại, Ngoại lệ)
 - [x] Kết nối MongoDB theo Singleton Pattern
 - [x] Dockerized backend + MongoDB sử dụng docker và docker-compose
 
 ### Chưa làm: Không có
 
 ### Những thứ chưa được cải tiến:
-
 
 ## Hướng dẫn deploy
 
