@@ -24,9 +24,6 @@ services:
     networks:
       - node-network
 
-volumes:
-  dbdata6:
-
 networks:
   node-network:
     driver: bridge
