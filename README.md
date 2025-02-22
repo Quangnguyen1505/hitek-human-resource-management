@@ -2,7 +2,7 @@
 
 ## 🚀 Giới thiệu
 
-Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hiệu quả. Dự án được xây dựng bằng TypeScript, Node.js, Express và MongoDB, tích hợp Singleton Pattern trong quá trình khởi tạo database.
+Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hiệu quả. Dự án được xây dựng bằng TypeScript, Node.js, Express và MongoDB, tích hợp Singleton Pattern trong quá trình khởi tạo database. Ngoài ra, sử dụng Docker, Docker-compoes cho việc xây dựng và triển khai hệ thống.
 
 ## Thông tin môi trường phát triển
 
