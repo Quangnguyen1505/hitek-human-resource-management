@@ -4,23 +4,24 @@
 
 Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hiệu quả. Dự án được xây dựng bằng TypeScript, Node.js, Express và MongoDB, tích hợp Singleton Pattern trong quá trình khởi tạo database.
 
-## Phiên bản
+## Thông tin môi trường phát triển
 
 - Node.js: v20.17.0
+- Package Manager: npm 10.8.2
 - Express: v5.0.1
 - MongoDB: 4.4 (Dockerized)
-- Docker: 27.3.1, Docker Compose: v2.30.3
+- Docker: 27.3.1, Docker Compose: v2.30.3-desktop.1
 
 ## 📂 Cấu trúc thư mục
 
 ```
-/task-hitek
+/hitek-human-resource-management
 │── docs/
 │   ├── images/         # Những hình ảnh test API
 │       ├── authentication
 │       ├── employee
 │── src/                # Mã nguồn chính
-│   ├── config/         # Cài đặt cấu hình
+│   ├── config/         # Sử dụng cấu hình
 │   ├── controllers/    # Xử lý request
 │   ├── core/           # Xử lý response và error
 │   ├── db/             # Kết nối MongoDB (Singleton Pattern)
@@ -38,14 +39,13 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 │── .env.example                # Mẫu file .env, hướng dẫn cấu hình biến môi trường
 │── .gitignore                  # Bỏ qua file khi commit vào Git
 │── .prettierrc                 # Cấu hình Prettier để format code
-│── docker-compose.prod.yml     # Cấu hình Docker Compose cho môi trường production
 │── docker-compose.yml          # Chạy dự án với Docker Compose
 │── Dockerfile                  # Đóng gói dự án thành Docker image
 │── eslint.config.mjs           # Cấu hình ESLint để kiểm tra code
 │── nodemon.json                # Cấu hình Nodemon để tự động reload server khi code thay đổi
 │── package-lock.json           # Khóa phiên bản dependencies
 │── package.json                # Quản lý dependencies và script chạy dự án
-│── README.md                   # Tài liệu hướng dẫn cách sử dụng dự án
+│── README.md                   # Tài liệu mô tả và hướng dẫn cách sử dụng dự án
 │── tsconfig.json               # Cài đặt TypeScript cho dự án
 ```
 
@@ -83,7 +83,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ### 🛠️ **Xác Thực (Authentication)**
 
-| Phương Thức | Endpoint                            | Mô Tả                                                                                                                                   | Yêu Cầu Token |
+| Phương Thức | Endpoint                            | Mô Tả                                                                                                                                   | Yêu Cầu Header |
 | ----------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `POST`      | `/api/v1/auth/register`             | Đăng ký tài khoản mới                                                                                                                   | ❌            |
 | `POST`      | `/api/v1/auth/login`                | Đăng nhập                                                                                                                               | ❌            |
@@ -94,12 +94,21 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ### 👤 **Nhân sự (Employees)**
 
-| Phương Thức | Endpoint                | Mô Tả                         | Yêu Cầu Token |
+| Phương Thức | Endpoint                | Mô Tả                         | Yêu Cầu Header |
 | ----------- | ----------------------- | ----------------------------- | ------------- |
 | `GET`       | `/api/v1/employees`     | Lấy danh sách nhân sự         | ✅            |
 | `GET`       | `/api/v1/employees/:id` | Lấy thông tin nhân sự theo ID | ✅            |
 | `PUT`       | `/api/v1/employees/:id` | Cập nhật thông tin nhân sự    | ✅            |
 | `DELETE`    | `/api/v1/employees/:id` | Xóa nhân sự                   | ✅            |
+
+### 📌 Các tham số Header của API
+```sh
+x-client-id: <userId>
+authorization: <accessToken>
+x-rtoken-id: <refreshToken>
+```
+**Riêng `/api/v1/auth/handler-refreshToken` cần `x-client-id`, `authorization`, `x-rtoken-id`.**  
+**Còn lại, những API nào yêu cầu Header thì cần `x-client-id`, `authorization`.**
 
 # 📸 Kiểm Tra API (Test API)
 
@@ -170,7 +179,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 ![Delete](./docs/images/employee/delete.png)
 
-## Hướng dẫn sử dụng
+## Hướng dẫn sử dụng (build và deploy)
 
 1. **Clone repo**
 
@@ -186,11 +195,17 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 docker-compose up --build -d
 ```
 
+4. **Kiểm tra container**
+
+```sh
+docker ps
+```
+
 5. **Truy cập API**
 
 ```sh
-example:
-http://localhost:3000/api/employees
+Ví dụ:
+http://localhost:3000/api/employees (Lưu ý: api này này cần header(x-client-id, authorization) từ đăng nhập)
 ```
 
 6. **Dừng container**
@@ -209,33 +224,9 @@ Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tr
 
 - [x] Quản lý nhân sự(Xem tất cả, xem chi tiết, xóa, chỉnh sửa nhân sự )
 - [x] Authentication(Đăng kí, đăng nhập, thay đổi mật khẩu)
-- [x] Xác thực JWT bảo vệ router và tạo JWT sử dụng thuật toán đối xứng
+- [x] Xác thực JWT bảo vệ router và tạo JWT sử dụng thuật toán đối xứng ngoài ra có cấp cặp Token mới khi hết hạn và ngăn chặn tấn công sử dụng lại token
 - [x] Xử lý lỗi(Thành công, Thất bại, Ngoại lệ)
 - [x] Kết nối MongoDB theo Singleton Pattern
 - [x] Dockerized backend + MongoDB sử dụng docker và docker-compose
 
 ### Chưa làm: Không có
-
-### Những thứ chưa được cải tiến:
-
-## Hướng dẫn deploy
-
-1. **Clone repo**
-
-```sh
-git clone <repo_url>
-```
-
-2. **Cài đặt Docker và Docker Compose**
-3. **Chạy lệnh sau**
-
-```sh
-docker-compose up --build -d
-```
-
-4. **Truy cập API**
-
-```sh
-example:
-http://localhost:3000/api/employees
-```
