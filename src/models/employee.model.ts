@@ -21,6 +21,8 @@ const EmployeeSchema: Schema<IUser> = new Schema(
   { timestamps: true }
 )
 
+EmployeeSchema.index({ status: 1 })
+
 const EmployeeModel = mongoose.model<IUser>('employees', EmployeeSchema)
 
 export default EmployeeModel
