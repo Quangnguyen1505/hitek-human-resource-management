@@ -1,3 +1,5 @@
+import { Response } from 'express'
+
 export const StatusCode = {
   OK: 200,
   CREATED: 201
@@ -8,54 +10,55 @@ export const ReasonStatusCode = {
   OK: 'Success!!'
 } as const
 
-interface SuccessResponseParams {
+interface SuccessResponseParams<T = unknown> {
   message?: string
-  statusCode?: number
-  reasonStatusCode?: string
-  metadata?: Record<string, any> | null
+  statusCode?: (typeof StatusCode)[keyof typeof StatusCode]
+  reasonStatusCode?: (typeof ReasonStatusCode)[keyof typeof ReasonStatusCode]
+  metadata?: T | null
 }
 
-export class SuccessResponse {
+export class SuccessResponse<T = unknown> {
   public message: string
   public status: number
-  public metadata: Record<string, any>
+  public metadata: T
 
   constructor({
     message,
     statusCode = StatusCode.OK,
     reasonStatusCode = ReasonStatusCode.OK,
-    metadata = {}
-  }: SuccessResponseParams) {
+    metadata = {} as T
+  }: SuccessResponseParams<T>) {
     this.message = message ?? reasonStatusCode
     this.status = statusCode
-    this.metadata = metadata ?? {}
+    this.metadata = metadata ?? ({} as T)
   }
 
-  send(res: any, header: Record<string, any> = {}): any {
+  send(res: Response, header: Record<string, string> = {}): Response {
+    Object.entries(header).forEach(([key, value]) => res.setHeader(key, value))
     return res.status(this.status).json(this)
   }
 }
 
-export class OK extends SuccessResponse {
-  constructor({ message, metadata }: SuccessResponseParams) {
+export class OK<T = unknown> extends SuccessResponse<T> {
+  constructor({ message, metadata }: SuccessResponseParams<T>) {
     super({ message, metadata })
   }
 }
 
-interface CreateParams extends SuccessResponseParams {
-  options?: Record<string, any>
+interface CreateParams<T = unknown, O = Record<string, unknown>> extends SuccessResponseParams<T> {
+  options?: O
 }
 
-export class CREATE extends SuccessResponse {
-  public options: Record<string, any>
+export class CREATE<T = unknown, O = Record<string, unknown>> extends SuccessResponse<T> {
+  public options: O
 
   constructor({
-    options = {},
+    options = {} as O,
     message,
     statusCode = StatusCode.CREATED,
     reasonStatusCode = ReasonStatusCode.CREATED,
     metadata
-  }: CreateParams) {
+  }: CreateParams<T, O>) {
     super({ message, statusCode, reasonStatusCode, metadata })
     this.options = options
   }

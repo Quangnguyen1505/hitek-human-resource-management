@@ -217,7 +217,6 @@ Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tr
 
 ### Những thứ chưa được cải tiến:
 
-- [] Tối ưu hóa docker image size
 
 ## Hướng dẫn deploy
 
