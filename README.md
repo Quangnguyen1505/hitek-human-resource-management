@@ -98,7 +98,7 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 | ----------- | ----------------------- | ----------------------------- | ------------- |
 | `GET`       | `/api/v1/employees`     | Lấy danh sách nhân sự         | ✅            |
 | `GET`       | `/api/v1/employees/:id` | Lấy thông tin nhân sự theo ID | ✅            |
-| `PUT`       | `/api/v1/employees/:id` | Cập nhật thông tin nhân sự    | ✅            |
+| `PUT`       | `/api/v1/employees`     | Cập nhật thông tin nhân sự    | ✅            |
 | `DELETE`    | `/api/v1/employees/:id` | Xóa nhân sự                   | ✅            |
 
 ### 📌 Các tham số Header của API
