@@ -47,7 +47,7 @@ const findEmployeeById = async (userId: string, excludePassword = false): Promis
   }
 
   const unselect = excludePassword ? ['__v', 'password'] : []
-  const employee = await EmployeeModel.findById(userId).select(unGetDataSelectProduct(unselect)).lean()
+  const employee = await EmployeeModel.findById(userId).select(unGetDataSelectProduct(unselect))
   return employee
 }
 
