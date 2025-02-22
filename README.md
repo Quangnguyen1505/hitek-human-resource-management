@@ -160,11 +160,11 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 
 **7. Update employees**
 
-**Request Body:**  
- ![Request Body](./docs/images/employee/updateBody.png)
+**Request Header:**  
+ ![Request Body](./docs/images/employee/updateHeader.png)
 
-**Response:**  
- ![Response](./docs/images/employee/updateResult.png)
+**Body and Response:**  
+ ![Response](./docs/images/employee/updateBodyandResult.png)
 
 **8. Delete employees**
 

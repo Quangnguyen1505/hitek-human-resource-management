@@ -15,10 +15,11 @@ const updateEmployeeById = async ({ userId, payload, isNew = true }: UpdateEmplo
       throw new BadRequestError('Invalid user ID')
     }
 
+    const unselect: string[] = ['__v', 'password']
     const updatedEmployee = await EmployeeModel.findByIdAndUpdate(userId, payload, {
       new: isNew,
       runValidators: true
-    })
+    }).select(unGetDataSelectProduct(unselect))
 
     if (!updatedEmployee) {
       throw new NotFoundError('Employee not found')

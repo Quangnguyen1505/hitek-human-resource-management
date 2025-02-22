@@ -10,11 +10,13 @@ import {
 import { IUserUpdate } from './employmee.type'
 class EmployeeService {
   static async getEmployees({ limit = 50, sort = 'ctime', page = 1, filter = { status: 'active' } }) {
+    const parsedFilter = typeof filter === 'string' ? JSON.parse(filter) : filter
+
     return await findAllEmployees({
       limit,
       sort,
       page,
-      filter,
+      filter: parsedFilter,
       unselect: ['__v', 'password']
     })
   }

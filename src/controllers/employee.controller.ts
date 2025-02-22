@@ -5,6 +5,7 @@ import EmployeeService from '~/services/employment/employee.service'
 
 class UserController {
   getEmployees = async (req: Request, res: Response) => {
+    console.log(req.query)
     new SuccessResponse({
       message: 'get employee successfully!',
       metadata: await EmployeeService.getEmployees(req.query)
