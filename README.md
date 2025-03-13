@@ -1,5 +1,5 @@
 # 📌 Human Resource Management
-### [🇻🇳 Vietnamese](README_VI.md)
+### [🇻🇳 <u>Vietnamese</u>](README_VI.md)
 ## 🚀 Introduction
 
 The Human Resource Management project helps administrators manage employees efficiently. The project is built with TypeScript, Node.js, Express, and MongoDB, integrating the Singleton Pattern for database initialization. Additionally, Docker and Docker Compose are used for building and deploying the system.
