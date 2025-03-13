@@ -1,10 +1,10 @@
-# 📌 Quản lý nhân sự
+# 📌 Human Resource Management
+### [🇻🇳 Vietnamese](README_VI.md)
+## 🚀 Introduction
 
-## 🚀 Giới thiệu
+The Human Resource Management project helps administrators manage employees efficiently. The project is built with TypeScript, Node.js, Express, and MongoDB, integrating the Singleton Pattern for database initialization. Additionally, Docker and Docker Compose are used for building and deploying the system.
 
-Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hiệu quả. Dự án được xây dựng bằng TypeScript, Node.js, Express và MongoDB, tích hợp Singleton Pattern trong quá trình khởi tạo database. Ngoài ra, sử dụng Docker, Docker-compose cho việc xây dựng và triển khai hệ thống.
-
-## Thông tin môi trường phát triển
+## Development Environment Information
 
 - Node.js: v20.17.0
 - Package Manager: npm 10.8.2
@@ -12,139 +12,139 @@ Dự án Quản lý nhân sự giúp admin quản lý nhân sự một cách hi�
 - MongoDB: 4.4 (Dockerized)
 - Docker: 27.3.1, Docker Compose: v2.30.3-desktop.1
 
-## 📂 Cấu trúc thư mục
+## 📂 Project Structure
 
 ```
 /hitek-human-resource-management
 │── docs/
-│   ├── images/         # Những hình ảnh test API
+│   ├── images/         # API test images
 │       ├── authentication
 │       ├── employee
-│── src/                # Mã nguồn chính
-│   ├── config/         # Sử dụng cấu hình
-│   ├── controllers/    # Xử lý request
-│   ├── core/           # Xử lý response và error
-│   ├── db/             # Kết nối MongoDB (Singleton Pattern)
-│   ├── middlewares/    # Middleware chung
-│   ├── models/         # Mô hình dữ liệu Mongoose
-│   ├── repository/     # Truy vấn dữ liệu
-│   ├── routes/         # Routes API
+│── src/                # Main source code
+│   ├── config/         # Configuration files
+│   ├── controllers/    # Request handling
+│   ├── core/           # Response and error handling
+│   ├── db/             # MongoDB connection (Singleton Pattern)
+│   ├── middlewares/    # Common middlewares
+│   ├── models/         # Mongoose data models
+│   ├── repository/     # Data queries
+│   ├── routes/         # API routes
 │   ├── services/       # Business logic
-│   ├── utils/          # Hỗ trợ tổng quát
-│   ├── app.ts          # Khởi tạo ứng dụng Express
-│   ├── index.ts        # Khởi động server
-│── .dockerignore               # Bỏ qua file khi build Docker
-│── .editorconfig               # Cấu hình quy tắc format code cho Editor
-│── .env                        # Biến môi trường cho ứng dụng
-│── .env.example                # Mẫu file .env, hướng dẫn cấu hình biến môi trường
-│── .gitignore                  # Bỏ qua file khi commit vào Git
-│── .prettierrc                 # Cấu hình Prettier để format code
-│── docker-compose.yml          # Chạy dự án với Docker Compose
-│── Dockerfile                  # Đóng gói dự án thành Docker image
-│── eslint.config.mjs           # Cấu hình ESLint để kiểm tra code
-│── nodemon.json                # Cấu hình Nodemon để tự động reload server khi code thay đổi
-│── package-lock.json           # Khóa phiên bản dependencies
-│── package.json                # Quản lý dependencies và script chạy dự án
-│── README.md                   # Tài liệu mô tả và hướng dẫn cách sử dụng dự án
-│── tsconfig.json               # Cài đặt TypeScript cho dự án
+│   ├── utils/          # General utilities
+│   ├── app.ts          # Express app initialization
+│   ├── index.ts        # Server startup
+│── .dockerignore               # Ignore files when building Docker
+│── .editorconfig               # Code formatting rules for Editor
+│── .env                        # Environment variables
+│── .env.example                # Sample .env file for configuration guidance
+│── .gitignore                  # Ignore files when committing to Git
+│── .prettierrc                 # Prettier configuration for code formatting
+│── docker-compose.yml          # Docker Compose configuration
+│── Dockerfile                  # Docker image packaging
+│── eslint.config.mjs           # ESLint configuration
+│── nodemon.json                # Nodemon configuration for auto-reloading
+│── package-lock.json           # Dependency version lock
+│── package.json                # Project dependencies and scripts
+│── README.md                   # Project documentation
+│── tsconfig.json               # TypeScript settings
 ```
 
-## 📌 Cấu trúc Database
+## 📌 Database Structure
 
-### 🗝️ **Bảng `keys`** (Lưu trữ khóa bảo mật)
+### 🗝️ **Table `keys`** (Stores security keys)
 
-| Trường              | Kiểu dữ liệu           | Bắt buộc | Mô tả                                  |
-| ------------------- | ---------------------- | -------- | -------------------------------------- |
-| `_id`               | `ObjectId`             | ✅       | ID của khóa (tự động tạo bởi MongoDB)  |
-| `user`              | `ObjectId (ref: Shop)` | ✅       | ID của Shop liên kết với khóa này      |
-| `privateKey`        | `String`               | ✅       | Khóa riêng tư                          |
-| `publicKey`         | `String`               | ✅       | Khóa công khai                         |
-| `refreshTokensUsed` | `Array<String>`        | ❌       | Danh sách các refresh token đã sử dụng |
-| `refreshToken`      | `String`               | ✅       | Refresh token hiện tại                 |
-| `createdAt`         | `Date`                 | ✅       | Thời gian tạo (tự động)                |
-| `updatedAt`         | `Date`                 | ✅       | Thời gian cập nhật (tự động)           |
-
----
-
-### 👤 **Bảng `employees`** (Lưu trữ thông tin nhân sự)
-
-| Trường      | Kiểu dữ liệu                 | Bắt buộc | Mô tả                                      |
-| ----------- | ---------------------------- | -------- | ------------------------------------------ |
-| `_id`       | `ObjectId`                   | ✅       | ID của nhân viên (tự động tạo bởi MongoDB) |
-| `username`  | `String (unique)`            | ✅       | Tên đăng nhập (không trùng lặp)            |
-| `fullname`  | `String`                     | ❌       | Họ và tên                                  |
-| `password`  | `String`                     | ✅       | Mật khẩu đã hash                           |
-| `avatar`    | `String`                     | ❌       | Ảnh đại diện                               |
-| `status`    | `Enum('active', 'deactive')` | ✅       | Trạng thái tài khoản (mặc định: `active`)  |
-| `createdAt` | `Date`                       | ✅       | Thời gian tạo (tự động)                    |
-| `updatedAt` | `Date`                       | ✅       | Thời gian cập nhật (tự động)               |
-
-## 📌 Danh Sách API
-
-### 🛠️ **Xác Thực (Authentication)**
-
-| Phương Thức | Endpoint                            | Mô Tả                                                                                                                                   | Yêu Cầu Header |
-| ----------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `POST`      | `/api/v1/auth/register`             | Đăng ký tài khoản mới                                                                                                                   | ❌            |
-| `POST`      | `/api/v1/auth/login`                | Đăng nhập                                                                                                                               | ❌            |
-| `POST`      | `/api/v1/auth/change-password`      | Thay đổi mật khẩu                                                                                                                       | ✅            |
-| `POST`      | `/api/v1/auth/handler-refreshToken` | Xử lý refresh token để cấp token mới khi access token hết hạn, đồng thời kiểm tra bảo mật để tránh các cuộc tấn công sử dụng lại token. | ✅            |
+| Field               | Data Type               | Required | Description                                   |
+| ------------------- | ---------------------- | -------- | --------------------------------------------- |
+| `_id`               | `ObjectId`             | ✅       | Key ID (auto-generated by MongoDB)           |
+| `user`              | `ObjectId (ref: Shop)` | ✅       | Shop ID linked to this key                   |
+| `privateKey`        | `String`               | ✅       | Private key                                  |
+| `publicKey`         | `String`               | ✅       | Public key                                   |
+| `refreshTokensUsed` | `Array<String>`        | ❌       | List of used refresh tokens                  |
+| `refreshToken`      | `String`               | ✅       | Current refresh token                        |
+| `createdAt`         | `Date`                 | ✅       | Creation time (auto-generated)               |
+| `updatedAt`         | `Date`                 | ✅       | Update time (auto-generated)                 |
 
 ---
 
-### 👤 **Nhân sự (Employees)**
+### 👤 **Table `employees`** (Stores employee information)
 
-| Phương Thức | Endpoint                | Mô Tả                         | Yêu Cầu Header |
-| ----------- | ----------------------- | ----------------------------- | ------------- |
-| `GET`       | `/api/v1/employees`     | Lấy danh sách nhân sự         | ✅            |
-| `GET`       | `/api/v1/employees/:id` | Lấy thông tin nhân sự theo ID | ✅            |
-| `PUT`       | `/api/v1/employees`     | Cập nhật thông tin nhân sự    | ✅            |
-| `DELETE`    | `/api/v1/employees/:id` | Xóa nhân sự                   | ✅            |
+| Field      | Data Type                   | Required | Description                                  |
+| ----------- | ---------------------------- | -------- | -------------------------------------------- |
+| `_id`       | `ObjectId`                   | ✅       | Employee ID (auto-generated by MongoDB)      |
+| `username`  | `String (unique)`            | ✅       | Unique login name                            |
+| `fullname`  | `String`                     | ❌       | Full name                                    |
+| `password`  | `String`                     | ✅       | Hashed password                              |
+| `avatar`    | `String`                     | ❌       | Profile picture                              |
+| `status`    | `Enum('active', 'deactive')` | ✅       | Account status (default: `active`)           |
+| `createdAt` | `Date`                       | ✅       | Creation time (auto-generated)               |
+| `updatedAt` | `Date`                       | ✅       | Update time (auto-generated)                 |
 
-### 📌 Các tham số Header của API
+## 📌 API List
+
+### 🛠️ **Authentication**
+
+| Method   | Endpoint                            | Description                                                                                                                    | Requires Header |
+| -------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `POST`   | `/api/v1/auth/register`             | Register a new account                                                                                                         | ❌             |
+| `POST`   | `/api/v1/auth/login`                | Login                                                                                                                          | ❌             |
+| `POST`   | `/api/v1/auth/change-password`      | Change password                                                                                                               | ✅             |
+| `POST`   | `/api/v1/auth/handler-refreshToken` | Handle refresh token to issue a new access token when the current one expires, ensuring security against token reuse attacks. | ✅             |
+
+---
+
+### 👤 **Employees**
+
+| Method   | Endpoint                | Description                     | Requires Header |
+| -------- | ----------------------- | ------------------------------- | -------------- |
+| `GET`    | `/api/v1/employees`     | Get employee list               | ✅             |
+| `GET`    | `/api/v1/employees/:id` | Get employee details by ID      | ✅             |
+| `PUT`    | `/api/v1/employees`     | Update employee information     | ✅             |
+| `DELETE` | `/api/v1/employees/:id` | Delete an employee              | ✅             |
+
+### 📌 API Header Parameters
 ```sh
 x-client-id: <userId>
 authorization: <accessToken>
 x-rtoken-id: <refreshToken>
 ```
-**Riêng `/api/v1/auth/handler-refreshToken` cần `x-client-id`, `authorization`, `x-rtoken-id`.**  
-**Còn lại, những API nào yêu cầu Header thì cần `x-client-id`, `authorization`.**
+**Only `/api/v1/auth/handler-refreshToken` requires `x-client-id`, `authorization`, `x-rtoken-id`.**
+**Other APIs that require Header require `x-client-id`, `authorization`.**
 
-# 📸 Kiểm Tra API (Test API)
+# 📸 API Test (Test API)
 
-Để kiểm tra các API của dự án, bạn có thể sử dụng **Postman**.
+To test your project's APIs, you can use **Postman**.
 
-## Sử Dụng Postman
+## Use Postman
 
 ### 🔐 **Authentication**
 
 **1. Register**
 
-**Request Body:**  
+**Request Body:**
  ![Request Body](./docs/images/authentication/registerBody.png)
 
-**Response:**  
+**Response:**
  ![Response](./docs/images/authentication/registerResult.png)
 
 **2. Login**
 
-**Request Body:**  
+**Request Body:**
  ![Request Body](./docs/images/authentication/loginBody.png)
 
-**Response:**  
+**Response:**
  ![Response](./docs/images/authentication/loginResult.png)
 
 **3. Change password**
 
-**Request Body and Response:**  
+**Request Body and Response:**
  ![Request Body and Response](./docs/images/authentication/changePassword.png)
 
 **4. Handle Refresh Token**
 
-**Request Header:**  
+**Request Header:**
  ![Request Header](./docs/images/authentication/handleRfTokenHeader.png)
 
-**Response:**  
+**Response:**
  ![Response](./docs/images/authentication/handleRfTokenResult.png)
 
 **Error if reusing Token:**
@@ -156,80 +156,80 @@ x-rtoken-id: <refreshToken>
 
 **5. Get employees by Id**
 
-**Request Header and Response:**  
+**Request Header and Response:**
  ![Request Header and Response](./docs/images/employee/getOne.png)
 
 **6. Get all employees**
 
-**Request Header:**  
+**Request Header:**
  ![Request Header](./docs/images/employee/getallHeader.png)
 
-**Response:**  
+**Response:**
  ![Response](./docs/images/employee/getAllResult.png)
 
 **7. Update employees**
 
-**Request Header:**  
+**Request Header:**
  ![Request Body](./docs/images/employee/updateHeader.png)
 
-**Body and Response:**  
+**Body and Response:**
  ![Response](./docs/images/employee/updateBodyandResult.png)
 
 **8. Delete employees**
 
 ![Delete](./docs/images/employee/delete.png)
 
-## Hướng dẫn sử dụng (build và deploy)
+## How to use (build and deploy)
 
 1. **Clone repo**
 
-2. **Cài đặt Docker và Docker Compose**
+2. **Install Docker and Docker Compose**
 
-### Chạy bằng Docker
+### Run with Docker
 
-3. **Thêm file .env như trong env.example**
+3. **Add .env file as in env.example**
 
-4. **Xây dựng và chạy container**
+4. **Build and run container**
 
 ```sh
 docker-compose up --build -d
 ```
 
-4. **Kiểm tra container**
+4. **Test container**
 
 ```sh
 docker ps
 ```
 
-5. **Truy cập API**
+5. **Access API**
 
 ```sh
-Ví dụ:
-http://localhost:3000/api/employees (Lưu ý: api này này cần header(x-client-id, authorization) từ đăng nhập)
+Example:
+http://localhost:3000/api/employees (Note: this api requires header(x-client-id, authorization) from login)
 ```
 
-6. **Dừng container**
+6. **Stop container**
 
 ```sh
 docker-compose down
 ```
 
-## Singleton Pattern trong khởi tạo MongoDB
+## Singleton Pattern in MongoDB initialization
 
-Dự án áp dụng Singleton Pattern trong việc kết nối MongoDB nhằm tránh tình trạng tạo nhiều kết nối không cần thiết
+The project applies Singleton Pattern in connecting MongoDB to avoid creating many unnecessary connections
 
-## Các tính năng
+## Features
 
-### Đã làm:
+### Done:
 
-- [x] Quản lý nhân sự(Xem tất cả, xem chi tiết, xóa, chỉnh sửa nhân sự )
-- [x] Authentication(Đăng kí, đăng nhập, thay đổi mật khẩu)
-- [x] Mã hóa Password với salt trước lưu vào database
-- [x] Tạo các index database(username, status) tối ưu cho việc truy vấn
-- [x] Xác thực JWT bảo vệ router và tạo JWT sử dụng thuật toán đối xứng ngoài ra có cấp cặp Token mới khi hết hạn và ngăn chặn tấn công sử dụng lại token
-- [x] Xử lý lỗi(Thành công, Thất bại, Ngoại lệ)
-- [x] Kiểm tra các tham số đầu vào 
-- [x] Kết nối MongoDB theo Singleton Pattern
-- [x] Dockerized backend + MongoDB sử dụng docker và docker-compose
+- [x] Personnel management (View all, view details, delete, edit personnel)
+- [x] Authentication (Register, login, change password)
+- [x] Encrypt Password with salt before saving to database
+- [x] Create database indexes (username, status) optimized for querying
+- [x] JWT authentication protects the router and creates JWT using symmetric algorithm, in addition to issuing new Token pairs when expired and preventing token reuse attacks
+- [x] Error handling (Success, Failure, Exception)
+- [x] Check input parameters
+- [x] Connect MongoDB according to Singleton Pattern
+- [x] Dockerized backend + MongoDB using docker and docker-compose
 
-### Chưa làm: Không có
+### Not done: None
